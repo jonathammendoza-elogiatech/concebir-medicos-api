@@ -1,0 +1,15 @@
+[
+  {
+    "cmp": "45782",
+    "rne": "23910",
+    "nombre": "Ana Torres Delgado",
+    "tratamiento": "Dra.",
+    "apellido": "Torres",
+    "iniciales": "AT",
+    "especialidad": "Medicina reproductiva",
+    "correo": "ana.torres@concebir.pe",
+    "telefono": "+51 984 312 900",
+    "sedeActiva": "SAN_ISIDRO",
+    "notificacionesAgenda": true
+  }
+]
