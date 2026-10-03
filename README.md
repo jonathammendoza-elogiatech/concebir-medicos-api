@@ -4,7 +4,7 @@ Servicio REST de **Concebir Médicos** (E6): capa en la nube que reemplaza al mo
 Sysmedical de la app Android. AWS Lambda (Python) + DynamoDB + API Gateway (HTTP API),
 con login de médicos en **Amazon Cognito**.
 
-> Todos los datos de `seed/` son **ficticios** (los mismos del prototipo).
+> Todos los datos de `seed/` son **ficticios** (mismos pacientes y médica del prototipo).
 
 ```
 App Android ──(CMP + contraseña)──▶ Cognito User Pool ──▶ access token (JWT)
@@ -33,8 +33,9 @@ Tokens: access e ID de 60 min, refresh de 30 días.
 | `lambdas/pacientes.py` | CRUD de pacientes + búsqueda (`?q=`, `?sede=`) |
 | `lambdas/citas.py` | Agenda (`?fecha=`, `?desde=&hasta=`, `?sede=`, `?estado=`), CRUD y registro de atención |
 | `lambdas/resultados.py` | Resultados de laboratorio y genética (`?pacienteId=`, `?tipo=`) + CRUD |
-| `seed/*.json` | Datos de ejemplo: Dra. Ana Torres (CMP 45782), 13 pacientes, 14 citas, 7 resultados |
-| `scripts/cargar_datos.py` | Carga `seed/` en DynamoDB |
+| `seed/*.json` | Datos de ejemplo: Dra. Ana Torres (CMP 45782), 13 pacientes, ~290 citas, 7 resultados |
+| `scripts/generar_datos.py` | Genera `seed/` con la agenda alrededor de la fecha de hoy |
+| `scripts/cargar_datos.py` | Carga `seed/` en DynamoDB (`--limpiar` borra antes lo que haya) |
 
 ## 1. DynamoDB — tablas
 
@@ -116,8 +117,23 @@ Con las credenciales del Learner Lab (*AWS Details → AWS CLI → Show*) copiad
 
 ```bash
 pip install boto3
-AWS_PROFILE=upc-moviles python3 scripts/cargar_datos.py
+python3 scripts/generar_datos.py                                   # agenda alrededor de hoy
+AWS_PROFILE=upc-moviles python3 scripts/cargar_datos.py --limpiar  # deja solo los datos de ejemplo
 ```
+
+La app usa la fecha y hora reales (Lima), así que la agenda se genera alrededor del día en que
+se corre el script:
+
+- Cubre desde dos semanas atrás hasta cuatro semanas adelante (lunes a sábado). El día de la
+  generación siempre tiene agenda completa en San Isidro, para poder hacer la demo.
+- El estado depende de la hora de generación: lo pasado queda **atendido** (la última cita de hoy,
+  **pendiente de registro**) y lo futuro **confirmado** (algunas reprogramadas o anuladas).
+- Guion fijo: tratamiento FIV de Lucía Fernández (ciclo 2, hoy es el día 8, punción en 2 días y
+  transferencia en 7) y una transferencia de María José hoy al mediodía.
+- El historial de cada paciente sale de sus citas atendidas.
+
+**Antes de una demo, vuelve a generar y cargar** para que "hoy" y las horas calcen. Con la misma
+fecha, el script produce los mismos datos (`--hoy` y `--hora` permiten fijarlos).
 
 ## 6. Probar
 

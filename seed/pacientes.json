@@ -3,7 +3,7 @@
     "id": "p01",
     "nombre": "Lucía Fernández Ramos",
     "iniciales": "LF",
-    "edad": 34,
+    "edad": 36,
     "sexo": "Femenino",
     "dni": "45892147",
     "historiaClinica": "HC-20481",
@@ -14,8 +14,8 @@
     "seguro": "Pacífico Salud",
     "plan": "Plan EPS Integral (cubre procedimientos reproductivos)",
     "estadoTratamiento": "EN_TRATAMIENTO",
-    "resumenTratamiento": "FIV Ciclo 2 · Día 8",
-    "ultimaAtencion": "2026-09-21T09:15:00",
+    "resumenTratamiento": "FIV Ciclo 2",
+    "ultimaAtencion": "2026-09-30T09:15:00",
     "antecedentes": {
       "obstetricos": "G1 P0 A1",
       "obstetricosDetalle": "1 aborto espontáneo en semana 8 (2022). Sin legrados posteriores.",
@@ -25,19 +25,19 @@
     },
     "atenciones": [
       {
-        "fecha": "2026-09-21",
+        "fecha": "2026-09-30",
         "hora": "09:15",
         "tipo": "Ecografía basal y analítica hormonal",
         "medico": "Dra. Ana Torres Delgado"
       },
       {
-        "fecha": "2026-09-17",
+        "fecha": "2026-09-26",
         "hora": "11:00",
         "tipo": "Inicio de estimulación ovárica",
         "medico": "Dra. Ana Torres Delgado"
       },
       {
-        "fecha": "2026-09-07",
+        "fecha": "2026-09-16",
         "hora": "16:00",
         "tipo": "Consulta de planificación de ciclo",
         "medico": "Dra. Ana Torres Delgado"
@@ -46,10 +46,9 @@
     "tratamiento": {
       "protocolo": "FIV",
       "ciclo": 2,
-      "dia": 8,
       "esquema": "Protocolo antagonista GnRH",
       "medicacion": "Menopur 150 UI + Gonal-F 225 UI",
-      "inicio": "2026-09-17",
+      "inicio": "2026-09-26",
       "medicoResponsable": "Dra. Ana Torres Delgado"
     }
   },
@@ -57,7 +56,7 @@
     "id": "p02",
     "nombre": "María José Ugarte",
     "iniciales": "MU",
-    "edad": 31,
+    "edad": 33,
     "sexo": "Femenino",
     "dni": "46120873",
     "historiaClinica": "HC-19402",
@@ -69,7 +68,7 @@
     "plan": "Plan EPS Integral",
     "estadoTratamiento": "EN_TRATAMIENTO",
     "resumenTratamiento": "Transferencia embrionaria",
-    "ultimaAtencion": "2026-09-20T10:00:00",
+    "ultimaAtencion": "2026-10-03T12:00:00",
     "antecedentes": {
       "obstetricos": "G0 P0",
       "obstetricosDetalle": "Sin gestaciones previas.",
@@ -77,13 +76,44 @@
       "alergias": "No referidas",
       "grupoSanguineo": "O+"
     },
-    "atenciones": []
+    "atenciones": [
+      {
+        "fecha": "2026-10-03",
+        "hora": "12:00",
+        "tipo": "Transferencia embrionaria",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-10-02",
+        "hora": "07:30",
+        "tipo": "Consulta de seguimiento",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-30",
+        "hora": "15:45",
+        "tipo": "Control post transferencia",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-29",
+        "hora": "07:30",
+        "tipo": "Control post transferencia",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-28",
+        "hora": "17:15",
+        "tipo": "Consulta de seguimiento",
+        "medico": "Dra. Ana Torres Delgado"
+      }
+    ]
   },
   {
     "id": "p03",
     "nombre": "Claudia Morales Peñaloza",
     "iniciales": "CM",
-    "edad": 38,
+    "edad": 40,
     "sexo": "Femenino",
     "dni": "41236590",
     "historiaClinica": "HC-18765",
@@ -95,7 +125,7 @@
     "plan": "Plan EPS Integral",
     "estadoTratamiento": "EN_TRATAMIENTO",
     "resumenTratamiento": "FIV Ciclo 1 · Programada",
-    "ultimaAtencion": "2026-09-22T09:00:00",
+    "ultimaAtencion": "2026-10-03T15:00:00",
     "antecedentes": {
       "obstetricos": "G0 P0",
       "obstetricosDetalle": "Sin gestaciones previas.",
@@ -103,13 +133,44 @@
       "alergias": "No referidas",
       "grupoSanguineo": "O+"
     },
-    "atenciones": []
+    "atenciones": [
+      {
+        "fecha": "2026-10-03",
+        "hora": "15:00",
+        "tipo": "Consulta de planificación FIV",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-28",
+        "hora": "07:30",
+        "tipo": "Ecografía basal",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-25",
+        "hora": "11:15",
+        "tipo": "Ecografía basal",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-24",
+        "hora": "07:30",
+        "tipo": "Ecografía basal",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-22",
+        "hora": "09:00",
+        "tipo": "Consulta de planificación FIV",
+        "medico": "Dra. Ana Torres Delgado"
+      }
+    ]
   },
   {
     "id": "p04",
     "nombre": "Valeria Benavides Torres",
     "iniciales": "VB",
-    "edad": 32,
+    "edad": 33,
     "sexo": "Femenino",
     "dni": "47015528",
     "historiaClinica": "HC-17482",
@@ -121,7 +182,7 @@
     "plan": "Plan EPS Integral",
     "estadoTratamiento": "EN_SEGUIMIENTO",
     "resumenTratamiento": "Estimulación ovárica",
-    "ultimaAtencion": "2026-09-24T08:45:00",
+    "ultimaAtencion": "2026-10-02T15:45:00",
     "antecedentes": {
       "obstetricos": "G0 P0",
       "obstetricosDetalle": "Sin gestaciones previas.",
@@ -129,13 +190,44 @@
       "alergias": "No referidas",
       "grupoSanguineo": "O+"
     },
-    "atenciones": []
+    "atenciones": [
+      {
+        "fecha": "2026-10-02",
+        "hora": "15:45",
+        "tipo": "Ecografía transvaginal",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-30",
+        "hora": "10:30",
+        "tipo": "Ecografía transvaginal",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-29",
+        "hora": "09:45",
+        "tipo": "Ecografía transvaginal",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-28",
+        "hora": "09:00",
+        "tipo": "Monitoreo ovulatorio",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-25",
+        "hora": "07:30",
+        "tipo": "Ecografía transvaginal",
+        "medico": "Dra. Ana Torres Delgado"
+      }
+    ]
   },
   {
     "id": "p05",
     "nombre": "Gabriela Salas Wong",
     "iniciales": "GS",
-    "edad": 36,
+    "edad": 38,
     "sexo": "Femenino",
     "dni": "43987012",
     "historiaClinica": "HC-17980",
@@ -147,7 +239,7 @@
     "plan": "Plan EPS Integral",
     "estadoTratamiento": "EN_SEGUIMIENTO",
     "resumenTratamiento": "Criopreservación ovocitaria",
-    "ultimaAtencion": "2026-09-07T12:00:00",
+    "ultimaAtencion": "2026-10-02T11:15:00",
     "antecedentes": {
       "obstetricos": "G0 P0",
       "obstetricosDetalle": "Sin gestaciones previas.",
@@ -155,13 +247,44 @@
       "alergias": "No referidas",
       "grupoSanguineo": "O+"
     },
-    "atenciones": []
+    "atenciones": [
+      {
+        "fecha": "2026-10-02",
+        "hora": "11:15",
+        "tipo": "Consulta de criopreservación",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-10-01",
+        "hora": "09:45",
+        "tipo": "Consulta de criopreservación",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-29",
+        "hora": "11:15",
+        "tipo": "Control hormonal",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-28",
+        "hora": "15:00",
+        "tipo": "Consulta de criopreservación",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-26",
+        "hora": "08:00",
+        "tipo": "Consulta de criopreservación",
+        "medico": "Dra. Ana Torres Delgado"
+      }
+    ]
   },
   {
     "id": "p06",
     "nombre": "Carlos Mendoza Vargas",
     "iniciales": "CV",
-    "edad": 37,
+    "edad": 39,
     "sexo": "Masculino",
     "dni": "42658731",
     "historiaClinica": "HC-18930",
@@ -173,7 +296,7 @@
     "plan": "Plan EPS Integral",
     "estadoTratamiento": "EN_SEGUIMIENTO",
     "resumenTratamiento": "Estudio de factor masculino",
-    "ultimaAtencion": "2026-09-12T11:30:00",
+    "ultimaAtencion": "2026-10-02T09:45:00",
     "antecedentes": {
       "obstetricos": "G0 P0",
       "obstetricosDetalle": "Sin gestaciones previas.",
@@ -181,13 +304,44 @@
       "alergias": "No referidas",
       "grupoSanguineo": "O+"
     },
-    "atenciones": []
+    "atenciones": [
+      {
+        "fecha": "2026-10-02",
+        "hora": "09:45",
+        "tipo": "Entrega de resultados",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-10-01",
+        "hora": "07:30",
+        "tipo": "Entrega de resultados",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-30",
+        "hora": "11:15",
+        "tipo": "Entrega de resultados",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-28",
+        "hora": "15:45",
+        "tipo": "Espermatograma analítico",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-25",
+        "hora": "15:45",
+        "tipo": "Entrega de resultados",
+        "medico": "Dra. Ana Torres Delgado"
+      }
+    ]
   },
   {
     "id": "p07",
     "nombre": "Rosa Paredes Salinas",
     "iniciales": "RP",
-    "edad": 38,
+    "edad": 40,
     "sexo": "Femenino",
     "dni": "40871264",
     "historiaClinica": "HC-21019",
@@ -199,7 +353,7 @@
     "plan": "Plan EPS Integral",
     "estadoTratamiento": "EN_SEGUIMIENTO",
     "resumenTratamiento": "Evaluación inicial de fertilidad",
-    "ultimaAtencion": "2026-09-24T09:30:00",
+    "ultimaAtencion": "2026-10-03T09:00:00",
     "antecedentes": {
       "obstetricos": "G0 P0",
       "obstetricosDetalle": "Sin gestaciones previas.",
@@ -207,13 +361,44 @@
       "alergias": "No referidas",
       "grupoSanguineo": "O+"
     },
-    "atenciones": []
+    "atenciones": [
+      {
+        "fecha": "2026-10-03",
+        "hora": "09:00",
+        "tipo": "Consulta de resultados",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-10-02",
+        "hora": "08:15",
+        "tipo": "Consulta de resultados",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-10-01",
+        "hora": "11:15",
+        "tipo": "Consulta inicial fertilidad",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-30",
+        "hora": "16:30",
+        "tipo": "Consulta inicial fertilidad",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-29",
+        "hora": "09:00",
+        "tipo": "Consulta inicial fertilidad",
+        "medico": "Dra. Ana Torres Delgado"
+      }
+    ]
   },
   {
     "id": "p08",
     "nombre": "Fiorella Castro Medina",
     "iniciales": "FC",
-    "edad": 29,
+    "edad": 31,
     "sexo": "Femenino",
     "dni": "72514039",
     "historiaClinica": "HC-22105",
@@ -224,8 +409,8 @@
     "seguro": "Pacífico Salud",
     "plan": "Plan EPS Integral",
     "estadoTratamiento": "EN_TRATAMIENTO",
-    "resumenTratamiento": "Estimulación ovárica · Día 5",
-    "ultimaAtencion": "2026-09-19T15:00:00",
+    "resumenTratamiento": "Estimulación ovárica",
+    "ultimaAtencion": "2026-10-02T12:00:00",
     "antecedentes": {
       "obstetricos": "G0 P0",
       "obstetricosDetalle": "Sin gestaciones previas.",
@@ -233,13 +418,44 @@
       "alergias": "No referidas",
       "grupoSanguineo": "O+"
     },
-    "atenciones": []
+    "atenciones": [
+      {
+        "fecha": "2026-10-02",
+        "hora": "12:00",
+        "tipo": "Ecografía transvaginal",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-30",
+        "hora": "15:00",
+        "tipo": "Ecografía transvaginal",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-29",
+        "hora": "10:30",
+        "tipo": "Control de estimulación",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-28",
+        "hora": "12:00",
+        "tipo": "Ecografía transvaginal",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-25",
+        "hora": "09:45",
+        "tipo": "Ecografía transvaginal",
+        "medico": "Dra. Ana Torres Delgado"
+      }
+    ]
   },
   {
     "id": "p09",
     "nombre": "Andrea Quispe León",
     "iniciales": "AQ",
-    "edad": 33,
+    "edad": 35,
     "sexo": "Femenino",
     "dni": "45310987",
     "historiaClinica": "HC-21560",
@@ -250,8 +466,8 @@
     "seguro": "Pacífico Salud",
     "plan": "Plan EPS Integral",
     "estadoTratamiento": "EN_TRATAMIENTO",
-    "resumenTratamiento": "FIV Ciclo 1 · Día 3",
-    "ultimaAtencion": "2026-09-21T16:30:00",
+    "resumenTratamiento": "FIV Ciclo 1 · En estimulación",
+    "ultimaAtencion": "2026-10-03T10:30:00",
     "antecedentes": {
       "obstetricos": "G0 P0",
       "obstetricosDetalle": "Sin gestaciones previas.",
@@ -259,13 +475,44 @@
       "alergias": "No referidas",
       "grupoSanguineo": "O+"
     },
-    "atenciones": []
+    "atenciones": [
+      {
+        "fecha": "2026-10-03",
+        "hora": "10:30",
+        "tipo": "Ecografía transvaginal",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-10-02",
+        "hora": "09:00",
+        "tipo": "Ecografía transvaginal",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-30",
+        "hora": "08:15",
+        "tipo": "Control de estimulación",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-26",
+        "hora": "12:30",
+        "tipo": "Control de estimulación",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-25",
+        "hora": "17:15",
+        "tipo": "Ecografía transvaginal",
+        "medico": "Dra. Ana Torres Delgado"
+      }
+    ]
   },
   {
     "id": "p10",
     "nombre": "Kiara Soto Mejía",
     "iniciales": "KS",
-    "edad": 30,
+    "edad": 31,
     "sexo": "Femenino",
     "dni": "73145862",
     "historiaClinica": "HC-22318",
@@ -277,7 +524,7 @@
     "plan": "Plan EPS Integral",
     "estadoTratamiento": "EN_SEGUIMIENTO",
     "resumenTratamiento": "Revisión de resultados",
-    "ultimaAtencion": "2026-09-24T07:30:00",
+    "ultimaAtencion": "2026-10-02T16:30:00",
     "antecedentes": {
       "obstetricos": "G0 P0",
       "obstetricosDetalle": "Sin gestaciones previas.",
@@ -285,13 +532,44 @@
       "alergias": "No referidas",
       "grupoSanguineo": "O+"
     },
-    "atenciones": []
+    "atenciones": [
+      {
+        "fecha": "2026-10-02",
+        "hora": "16:30",
+        "tipo": "Consulta de seguimiento",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-10-01",
+        "hora": "10:30",
+        "tipo": "Consulta de seguimiento",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-30",
+        "hora": "18:00",
+        "tipo": "Consulta de seguimiento",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-28",
+        "hora": "18:00",
+        "tipo": "Consulta de resultados",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-25",
+        "hora": "12:00",
+        "tipo": "Consulta de resultados",
+        "medico": "Dra. Ana Torres Delgado"
+      }
+    ]
   },
   {
     "id": "p11",
     "nombre": "Diana Chávez Ríos",
     "iniciales": "DC",
-    "edad": 35,
+    "edad": 36,
     "sexo": "Femenino",
     "dni": "44723618",
     "historiaClinica": "HC-19877",
@@ -303,7 +581,7 @@
     "plan": "Plan EPS Integral",
     "estadoTratamiento": "EN_TRATAMIENTO",
     "resumenTratamiento": "Inseminación intrauterina",
-    "ultimaAtencion": "2026-09-22T10:00:00",
+    "ultimaAtencion": "2026-09-29T15:45:00",
     "antecedentes": {
       "obstetricos": "G0 P0",
       "obstetricosDetalle": "Sin gestaciones previas.",
@@ -311,13 +589,32 @@
       "alergias": "No referidas",
       "grupoSanguineo": "O+"
     },
-    "atenciones": []
+    "atenciones": [
+      {
+        "fecha": "2026-09-29",
+        "hora": "15:45",
+        "tipo": "Histerosonografía",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-22",
+        "hora": "15:45",
+        "tipo": "Histerosonografía",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-15",
+        "hora": "15:45",
+        "tipo": "Histerosonografía",
+        "medico": "Dra. Ana Torres Delgado"
+      }
+    ]
   },
   {
     "id": "p12",
     "nombre": "Paola Vega Castillo",
     "iniciales": "PV",
-    "edad": 31,
+    "edad": 33,
     "sexo": "Femenino",
     "dni": "46581230",
     "historiaClinica": "HC-22410",
@@ -329,7 +626,7 @@
     "plan": "Plan EPS Integral",
     "estadoTratamiento": "EN_SEGUIMIENTO",
     "resumenTratamiento": "Evaluación inicial de fertilidad",
-    "ultimaAtencion": "2026-09-23T15:00:00",
+    "ultimaAtencion": "2026-10-01T15:00:00",
     "antecedentes": {
       "obstetricos": "G0 P0",
       "obstetricosDetalle": "Sin gestaciones previas.",
@@ -337,13 +634,32 @@
       "alergias": "No referidas",
       "grupoSanguineo": "O+"
     },
-    "atenciones": []
+    "atenciones": [
+      {
+        "fecha": "2026-10-01",
+        "hora": "15:00",
+        "tipo": "Consulta de resultados",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-24",
+        "hora": "15:45",
+        "tipo": "Consulta inicial fertilidad",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-17",
+        "hora": "15:00",
+        "tipo": "Consulta de resultados",
+        "medico": "Dra. Ana Torres Delgado"
+      }
+    ]
   },
   {
     "id": "p13",
     "nombre": "Milagros Huamán Torres",
     "iniciales": "MH",
-    "edad": 37,
+    "edad": 39,
     "sexo": "Femenino",
     "dni": "42097315",
     "historiaClinica": "HC-18214",
@@ -355,7 +671,7 @@
     "plan": "Plan EPS Integral",
     "estadoTratamiento": "EN_SEGUIMIENTO",
     "resumenTratamiento": "Control post transferencia",
-    "ultimaAtencion": "2026-09-14T09:30:00",
+    "ultimaAtencion": "2026-09-29T15:00:00",
     "antecedentes": {
       "obstetricos": "G0 P0",
       "obstetricosDetalle": "Sin gestaciones previas.",
@@ -363,6 +679,25 @@
       "alergias": "No referidas",
       "grupoSanguineo": "O+"
     },
-    "atenciones": []
+    "atenciones": [
+      {
+        "fecha": "2026-09-29",
+        "hora": "15:00",
+        "tipo": "Control post transferencia",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-22",
+        "hora": "17:15",
+        "tipo": "Control post transferencia",
+        "medico": "Dra. Ana Torres Delgado"
+      },
+      {
+        "fecha": "2026-09-15",
+        "hora": "15:00",
+        "tipo": "Prueba de embarazo (β-hCG)",
+        "medico": "Dra. Ana Torres Delgado"
+      }
+    ]
   }
 ]
