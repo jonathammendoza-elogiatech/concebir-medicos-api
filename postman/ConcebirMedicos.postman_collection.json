@@ -1,0 +1,1110 @@
+{
+  "info": {
+    "name": "Concebir Médicos API",
+    "description": "Servicio REST de Concebir Médicos (Lambda + DynamoDB + HTTP API, login con Cognito).\n\n1. Completa la variable `password`.\n2. Ejecuta **0. Auth → Login**: guarda `accessToken` automáticamente.\n3. El resto de requests heredan `Bearer {{accessToken}}`.\n\nLos requests de creación guardan el id creado (`nuevo*`) para que Actualizar/Eliminar trabajen sobre ese registro y no sobre los datos de ejemplo.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "0. Auth (Cognito)",
+      "item": [
+        {
+          "name": "Login (USER_PASSWORD_AUTH)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const r = pm.response.json().AuthenticationResult;",
+                  "pm.collectionVariables.set('accessToken', r.AccessToken);",
+                  "if (r.RefreshToken) pm.collectionVariables.set('refreshToken', r.RefreshToken);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-amz-json-1.1"
+              },
+              {
+                "key": "X-Amz-Target",
+                "value": "AWSCognitoIdentityProviderService.InitiateAuth"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"AuthFlow\": \"USER_PASSWORD_AUTH\",\n  \"ClientId\": \"{{cognitoClientId}}\",\n  \"AuthParameters\": {\n    \"USERNAME\": \"{{cmp}}\",\n    \"PASSWORD\": \"{{password}}\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{cognitoUrl}}/",
+              "protocol": "https",
+              "host": [
+                "cognito-idp",
+                "us-east-1",
+                "amazonaws",
+                "com"
+              ],
+              "path": [
+                ""
+              ]
+            },
+            "description": "Obtiene el access token (60 min) y el refresh token (30 días). Los guarda en las variables de la colección `accessToken` y `refreshToken`."
+          }
+        },
+        {
+          "name": "Renovar token (REFRESH_TOKEN_AUTH)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const r = pm.response.json().AuthenticationResult;",
+                  "pm.collectionVariables.set('accessToken', r.AccessToken);",
+                  "if (r.RefreshToken) pm.collectionVariables.set('refreshToken', r.RefreshToken);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-amz-json-1.1"
+              },
+              {
+                "key": "X-Amz-Target",
+                "value": "AWSCognitoIdentityProviderService.InitiateAuth"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"AuthFlow\": \"REFRESH_TOKEN_AUTH\",\n  \"ClientId\": \"{{cognitoClientId}}\",\n  \"AuthParameters\": {\n    \"REFRESH_TOKEN\": \"{{refreshToken}}\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{cognitoUrl}}/",
+              "protocol": "https",
+              "host": [
+                "cognito-idp",
+                "us-east-1",
+                "amazonaws",
+                "com"
+              ],
+              "path": [
+                ""
+              ]
+            },
+            "description": "Renueva el access token con el refresh token (mismo flujo que el login biométrico de la app)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "1. Médicos",
+      "item": [
+        {
+          "name": "Perfil del médico logueado",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "medicos",
+                "me"
+              ],
+              "raw": "{{baseUrl}}/medicos/me"
+            },
+            "description": "E1 · El CMP sale del token."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('success = true', () => pm.expect(pm.response.json().success).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cambiar sede activa / notificaciones",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "medicos",
+                "me"
+              ],
+              "raw": "{{baseUrl}}/medicos/me"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sedeActiva\": \"SAN_ISIDRO\",\n  \"notificacionesAgenda\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Solo acepta `sedeActiva` (SAN_ISIDRO | LOS_OLIVOS | SAN_MIGUEL) y `notificacionesAgenda`."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('success = true', () => pm.expect(pm.response.json().success).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar médicos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "medicos"
+              ],
+              "raw": "{{baseUrl}}/medicos"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('success = true', () => pm.expect(pm.response.json().success).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Obtener médico por CMP",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "medicos",
+                "{{cmp}}"
+              ],
+              "raw": "{{baseUrl}}/medicos/{{cmp}}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('success = true', () => pm.expect(pm.response.json().success).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Crear médico",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "medicos"
+              ],
+              "raw": "{{baseUrl}}/medicos"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cmp\": \"99999\",\n  \"rne\": \"00000\",\n  \"nombre\": \"Médico Prueba Postman\",\n  \"tratamiento\": \"Dr.\",\n  \"apellido\": \"Prueba\",\n  \"iniciales\": \"MP\",\n  \"especialidad\": \"Medicina reproductiva\",\n  \"correo\": \"prueba@concebir.pe\",\n  \"telefono\": \"+51 900 000 000\",\n  \"sedeActiva\": \"LOS_OLIVOS\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Obligatorios: cmp, nombre, tratamiento, apellido, especialidad, sedeActiva. 409 si el CMP ya existe."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('success = true', () => pm.expect(pm.response.json().success).to.eql(true));",
+                  "pm.collectionVariables.set('nuevoCmp', pm.response.json().data.cmp);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar médico (parcial)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "medicos",
+                "{{nuevoCmp}}"
+              ],
+              "raw": "{{baseUrl}}/medicos/{{nuevoCmp}}"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"telefono\": \"+51 911 111 111\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('success = true', () => pm.expect(pm.response.json().success).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Eliminar médico",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "medicos",
+                "{{nuevoCmp}}"
+              ],
+              "raw": "{{baseUrl}}/medicos/{{nuevoCmp}}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 204', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2. Pacientes",
+      "item": [
+        {
+          "name": "Buscar pacientes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pacientes"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "lucia",
+                  "description": "Texto libre (nombre, DNI, HC)"
+                },
+                {
+                  "key": "sede",
+                  "value": "SAN_ISIDRO",
+                  "disabled": true,
+                  "description": "SAN_ISIDRO | LOS_OLIVOS | SAN_MIGUEL"
+                }
+              ],
+              "raw": "{{baseUrl}}/pacientes?q=lucia&sede=SAN_ISIDRO"
+            },
+            "description": "E4 · Búsqueda de pacientes."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('success = true', () => pm.expect(pm.response.json().success).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ficha del paciente",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pacientes",
+                "{{pacienteId}}"
+              ],
+              "raw": "{{baseUrl}}/pacientes/{{pacienteId}}"
+            },
+            "description": "Incluye tratamiento, antecedentes y atenciones."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('success = true', () => pm.expect(pm.response.json().success).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Crear paciente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pacientes"
+              ],
+              "raw": "{{baseUrl}}/pacientes"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Paciente Prueba Postman\",\n  \"iniciales\": \"PP\",\n  \"edad\": 30,\n  \"sexo\": \"Femenino\",\n  \"dni\": \"00000000\",\n  \"historiaClinica\": \"HC-00000\",\n  \"sede\": \"SAN_ISIDRO\",\n  \"estadoTratamiento\": \"EN_SEGUIMIENTO\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Obligatorios: nombre, dni, historiaClinica, sede. `id` opcional (si no, UUID)."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('success = true', () => pm.expect(pm.response.json().success).to.eql(true));",
+                  "pm.collectionVariables.set('nuevoPacienteId', pm.response.json().data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar paciente (parcial)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pacientes",
+                "{{nuevoPacienteId}}"
+              ],
+              "raw": "{{baseUrl}}/pacientes/{{nuevoPacienteId}}"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"telefono\": \"+51 922 222 222\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('success = true', () => pm.expect(pm.response.json().success).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Eliminar paciente",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pacientes",
+                "{{nuevoPacienteId}}"
+              ],
+              "raw": "{{baseUrl}}/pacientes/{{nuevoPacienteId}}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 204', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "3. Citas",
+      "item": [
+        {
+          "name": "Agenda del día",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "citas"
+              ],
+              "query": [
+                {
+                  "key": "fecha",
+                  "value": "{{fecha}}"
+                },
+                {
+                  "key": "sede",
+                  "value": "SAN_ISIDRO",
+                  "disabled": true
+                },
+                {
+                  "key": "estado",
+                  "value": "CONFIRMADA",
+                  "disabled": true,
+                  "description": "CONFIRMADA | ATENDIDA | REPROGRAMADA | ANULADA"
+                }
+              ],
+              "raw": "{{baseUrl}}/citas?fecha={{fecha}}&sede=SAN_ISIDRO&estado=CONFIRMADA"
+            },
+            "description": "E2 · Solo devuelve la agenda del médico logueado."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('success = true', () => pm.expect(pm.response.json().success).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Agenda por rango (semana)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "citas"
+              ],
+              "query": [
+                {
+                  "key": "desde",
+                  "value": "{{desde}}"
+                },
+                {
+                  "key": "hasta",
+                  "value": "{{hasta}}"
+                }
+              ],
+              "raw": "{{baseUrl}}/citas?desde={{desde}}&hasta={{hasta}}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('success = true', () => pm.expect(pm.response.json().success).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Detalle de cita",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "citas",
+                "{{citaId}}"
+              ],
+              "raw": "{{baseUrl}}/citas/{{citaId}}"
+            },
+            "description": "E3"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('success = true', () => pm.expect(pm.response.json().success).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Crear cita",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "citas"
+              ],
+              "raw": "{{baseUrl}}/citas"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fecha\": \"{{fecha}}\",\n  \"hora\": \"21:00\",\n  \"duracionMinutos\": 20,\n  \"pacienteId\": \"p-postman\",\n  \"pacienteNombre\": \"Paciente Prueba Postman\",\n  \"pacienteIniciales\": \"PP\",\n  \"historiaClinica\": \"HC-00000\",\n  \"tipo\": \"Consulta de control\",\n  \"sede\": \"SAN_ISIDRO\",\n  \"consultorio\": \"Consultorio 2\",\n  \"esProcedimientoMayor\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Obligatorios: fecha, hora, pacienteId, tipo, sede, consultorio. `medicoCmp` sale del token. Usa un paciente ficticio (`p-postman`) para que registrar la atención no toque el historial de los pacientes de ejemplo."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('success = true', () => pm.expect(pm.response.json().success).to.eql(true));",
+                  "pm.collectionVariables.set('nuevaCitaId', pm.response.json().data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar cita (parcial)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "citas",
+                "{{nuevaCitaId}}"
+              ],
+              "raw": "{{baseUrl}}/citas/{{nuevaCitaId}}"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hora\": \"21:30\",\n  \"estado\": \"REPROGRAMADA\",\n  \"horaAnterior\": \"21:00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('success = true', () => pm.expect(pm.response.json().success).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Registrar atención (nota firmada)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "citas",
+                "{{nuevaCitaId}}",
+                "atencion"
+              ],
+              "raw": "{{baseUrl}}/citas/{{nuevaCitaId}}/atencion"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipoNota\": \"EVOLUCION\",\n  \"nota\": \"Nota de prueba desde Postman.\",\n  \"marcarAtendida\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "E3 · tipoNota: EVOLUCION | INDICACION | OBSERVACION. Guarda `firmadoPor` (CMP del token) y la hora del servidor; agrega la atención al historial del paciente."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('success = true', () => pm.expect(pm.response.json().success).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Eliminar cita",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "citas",
+                "{{nuevaCitaId}}"
+              ],
+              "raw": "{{baseUrl}}/citas/{{nuevaCitaId}}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 204', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "4. Resultados",
+      "item": [
+        {
+          "name": "Resultados del paciente",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resultados"
+              ],
+              "query": [
+                {
+                  "key": "pacienteId",
+                  "value": "{{pacienteId}}"
+                },
+                {
+                  "key": "tipo",
+                  "value": "LABORATORIO",
+                  "disabled": true,
+                  "description": "LABORATORIO | GENETICA"
+                }
+              ],
+              "raw": "{{baseUrl}}/resultados?pacienteId={{pacienteId}}&tipo=LABORATORIO"
+            },
+            "description": "E4"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('success = true', () => pm.expect(pm.response.json().success).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Detalle de resultado",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resultados",
+                "{{resultadoId}}"
+              ],
+              "raw": "{{baseUrl}}/resultados/{{resultadoId}}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('success = true', () => pm.expect(pm.response.json().success).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Crear resultado",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resultados"
+              ],
+              "raw": "{{baseUrl}}/resultados"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pacienteId\": \"{{pacienteId}}\",\n  \"tipo\": \"LABORATORIO\",\n  \"categoria\": \"ANALÍTICA HORMONAL\",\n  \"nombre\": \"Prueba Postman\",\n  \"fechaHora\": \"{{fecha}}T08:00:00\",\n  \"valor\": \"1.0\",\n  \"unidad\": \"ng/mL\",\n  \"rangoReferencia\": \"0.5 - 2.0 ng/mL\",\n  \"estado\": \"EN_RANGO\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Obligatorios: pacienteId, tipo, nombre, estado (EN_RANGO | FUERA_DE_RANGO | PENDIENTE)."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('success = true', () => pm.expect(pm.response.json().success).to.eql(true));",
+                  "pm.collectionVariables.set('nuevoResultadoId', pm.response.json().data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar resultado (parcial)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resultados",
+                "{{nuevoResultadoId}}"
+              ],
+              "raw": "{{baseUrl}}/resultados/{{nuevoResultadoId}}"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notaClinica\": \"Revisado\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('success = true', () => pm.expect(pm.response.json().success).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Eliminar resultado",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resultados",
+                "{{nuevoResultadoId}}"
+              ],
+              "raw": "{{baseUrl}}/resultados/{{nuevoResultadoId}}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 204', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://0pn0osiqr1.execute-api.us-east-1.amazonaws.com"
+    },
+    {
+      "key": "cognitoUrl",
+      "value": "https://cognito-idp.us-east-1.amazonaws.com"
+    },
+    {
+      "key": "cognitoClientId",
+      "value": "2b3m67nub9tnakm6ifiac16mje"
+    },
+    {
+      "key": "cmp",
+      "value": "45782",
+      "description": "Usuario demo"
+    },
+    {
+      "key": "password",
+      "value": "",
+      "description": "Contraseña del usuario demo (se comparte por el canal del equipo)"
+    },
+    {
+      "key": "accessToken",
+      "value": ""
+    },
+    {
+      "key": "refreshToken",
+      "value": ""
+    },
+    {
+      "key": "fecha",
+      "value": "2026-10-08"
+    },
+    {
+      "key": "desde",
+      "value": "2026-10-05"
+    },
+    {
+      "key": "hasta",
+      "value": "2026-10-10"
+    },
+    {
+      "key": "pacienteId",
+      "value": "p01"
+    },
+    {
+      "key": "citaId",
+      "value": "c-20261008-0815"
+    },
+    {
+      "key": "resultadoId",
+      "value": "r1"
+    },
+    {
+      "key": "nuevoCmp",
+      "value": ""
+    },
+    {
+      "key": "nuevoPacienteId",
+      "value": ""
+    },
+    {
+      "key": "nuevaCitaId",
+      "value": ""
+    },
+    {
+      "key": "nuevoResultadoId",
+      "value": ""
+    }
+  ]
+}

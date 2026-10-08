@@ -36,6 +36,7 @@ Tokens: access e ID de 60 min, refresh de 30 días.
 | `seed/*.json` | Datos de ejemplo: Dra. Ana Torres (CMP 45782), 13 pacientes, ~290 citas, 7 resultados |
 | `scripts/generar_datos.py` | Genera `seed/` con la agenda alrededor de la fecha de hoy |
 | `scripts/cargar_datos.py` | Carga `seed/` en DynamoDB (`--limpiar` borra antes lo que haya) |
+| `postman/ConcebirMedicos.postman_collection.json` | Colección Postman v2.1 con login Cognito y todas las rutas |
 
 ## 1. DynamoDB — tablas
 
@@ -149,6 +150,17 @@ curl -s -X POST https://cognito-idp.us-east-1.amazonaws.com/ \
 API=https://<api-id>.execute-api.us-east-1.amazonaws.com
 curl -H "Authorization: Bearer $TOKEN" "$API/medicos/me"
 curl -H "Authorization: Bearer $TOKEN" "$API/citas?fecha=2026-09-24"
+```
+
+### Con Postman
+
+Importa `postman/ConcebirMedicos.postman_collection.json`, completa la variable de colección
+`password` y ejecuta **0. Auth → Login**: el `accessToken` queda guardado y el resto de requests
+lo envían como `Bearer`. Las carpetas de CRUD crean un registro de prueba, lo actualizan y lo
+eliminan, sin tocar los datos de ejemplo. También corre por consola:
+
+```bash
+newman run postman/ConcebirMedicos.postman_collection.json --env-var 'password=<CONTRASEÑA>'
 ```
 
 ## Rutas
